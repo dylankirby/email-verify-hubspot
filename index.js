@@ -17,23 +17,23 @@ async function testEmail(email){
         } else {
             console.log(`${email} is not valid`);
             index++
-            testEmail(emails[index]);
+            testEmail(emails[index]); //Recursive email test until correct email is found
         }
     } catch(error){
         console.log(error)
     }
 }
 
-// Argument variable
+// Command Line Args
 let first = process.argv[2];
 let last = process.argv[3];
 let companyDomain = process.argv[4];
 let index = 0;
 
-//format names into possible emails list
+//Format names into possible emails list
 let emails = listGen.nameToList(first, last, companyDomain);
 
-
+//Test emails
 testEmail(emails[index]);
 
 
