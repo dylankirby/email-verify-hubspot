@@ -13,6 +13,7 @@ const testEmail = (email) => {
     function(result) {
     	if(result.is(0)){
     		//email returned code zero ie is valid, create hubspot contact
+            console.log(`${email} is valid, creating contact`);
     		hubspot.createContact(first, last, email);
     	} else {
             console.log(`${email} is not valid`);

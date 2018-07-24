@@ -11,7 +11,12 @@ String.prototype.capitalize = function() {
 async function pushContact(props) {
 	try{
 		const response = await axios.post(API_URL, props);
-		console.log(response);
+		const {status} = response;
+		if(status == 200){
+			console.log("Contact Created");
+		} else {
+			console.log(`API returned status code: ${status}`);
+		}
 	} catch(error){
 		console.log(error);
 	}

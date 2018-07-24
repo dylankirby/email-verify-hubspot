@@ -1,0 +1,26 @@
+{
+  "name": "email-verify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "neverbounce": "^3.0.0",
+    "prompt": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "s": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylankirby/email-verify-hubspot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylankirby/email-verify-hubspot/issues"
+  },
+  "homepage": "https://github.com/dylankirby/email-verify-hubspot#readme"
+}
