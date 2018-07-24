@@ -13,7 +13,7 @@ async function pushContact(props) {
 		const response = await axios.post(API_URL, props);
 		const {status} = response;
 		if(status == 200){
-			console.log("Contact Created");
+			console.log(`Contact Created`);
 		} else {
 			console.log(`API returned status code: ${status}`);
 		}
