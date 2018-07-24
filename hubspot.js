@@ -1,7 +1,7 @@
 const axios = require('axios');
 const keys = require('./keys');
 
-const API_URL = "https://api.hubapi.com/contacts/v1/contact/?hapikey="
+const API_URL = `https://api.hubapi.com/contacts/v1/contact/?hapikey=demo`
 
 const createContact = (first, last, email) => {
 	const props = {
@@ -20,8 +20,7 @@ const createContact = (first, last, email) => {
 			}
 		]
 	}
-
-	return props
+	return props;
 }
 
 module.exports.createContact = createContact;

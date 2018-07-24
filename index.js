@@ -23,7 +23,9 @@ const testEmail = (email) => {
     		//email returned code zero ie is valid, create hubspot contact
     		let contact = hubspot.createContact(first, last, email);
     		console.log(contact);
-    	}
+    	} else {
+            console.log(`${email} is not valid`);
+        }
     },
     function(error) {
         // errors will bubble up through the reject method of the promise.
@@ -36,5 +38,7 @@ const testEmail = (email) => {
 for (var i = emails.length - 1; i >= 0; i--) {
 	testEmail(emails[i]);
 }
+
+
 
 
