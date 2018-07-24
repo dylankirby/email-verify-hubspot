@@ -7,6 +7,7 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+//async function call to hubspot api to create contact
 async function pushContact(props) {
 	try{
 		const response = await axios.post(API_URL, props);
@@ -17,6 +18,7 @@ async function pushContact(props) {
 }
 
 const createContact = (first, last, email) => {
+	//create contact props from valid email and name
 	const props = {
 		properties: [
 			{
@@ -33,6 +35,7 @@ const createContact = (first, last, email) => {
 			}
 		]
 	}
+	// push to hubspot
 	pushContact(props);
 }
 
