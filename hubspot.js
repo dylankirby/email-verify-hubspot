@@ -8,22 +8,8 @@ String.prototype.capitalize = function() {
 }
 
 //async function call to hubspot api to create contact
-async function pushContact(props) {
-	try{
-		const response = await axios.post(API_URL, props);
-		const {status} = response;
-		if(status == 200){
-			console.log(`Contact Created`);
-		} else {
-			console.log(`API returned status code: ${status}`);
-		}
-	} catch(error){
-		console.log(error);
-	}
-}
-
-const createContact = (first, last, email) => {
-	//create contact props from valid email and name
+async function createContact(first, last, email) {
+	
 	const props = {
 		properties: [
 			{
@@ -40,8 +26,20 @@ const createContact = (first, last, email) => {
 			}
 		]
 	}
-	// push to hubspot
-	pushContact(props);
+
+	try{
+		const response = await axios.post(API_URL, props);
+		const {status} = response;
+		if(status == 200){
+			console.log(`Contact Created`);
+			return true;
+		} else {
+			console.log(`API returned status code: ${status}`);
+			return false;
+		}
+	} catch(error){
+		console.log(error);
+	}
 }
 
 
