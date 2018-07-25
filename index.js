@@ -14,6 +14,13 @@ const NeverBounce = require('neverbounce')({
 
 const NameToDomain = clearbit.NameToDomain;
 
+function runCheck(){
+    emails = LG.nameToList(first, last, domain);
+    index=0
+    console.log("Checking emails");
+    testEmail(emails[index]);
+}
+
 
 //will prompt user for command line input, parse input, and start email testing
 function getInput(){
@@ -34,15 +41,15 @@ function getInput(){
         console.log("Input recieved, Fetching Company Domain");
         NameToDomain.find({name: company})
           .then(function (result) {
+            console.log("Domain found");
             domain = result.domain
-            emails = LG.nameToList(first, last, domain);
-
-            index=0
-            console.log("Checking emails");
-            testEmail(emails[index]);
+            runCheck();
           })
           .catch(NameToDomain.NotFoundError, function (err) {
             console.log(err); // Domain could not be found
+            console.log("Domain not found, defaulting to company.com");
+            domain = `${company}.com`
+            runCheck();
           })
           .catch(function (err) {
             console.log('Bad/invalid request, unauthorized, Clearbit error, or failed request');
