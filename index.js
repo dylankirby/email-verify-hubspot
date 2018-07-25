@@ -2,6 +2,7 @@ const LG = require('./name_to_email_list');
 const keys = require('./keys');
 const hubspot = require('./hubspot');
 const readline = require('readline');
+const clearbit = require('clearbit')(keys.Clearbit.API_KEY);
 
 let first,last,domain,emails, index=0;
 
@@ -11,11 +12,44 @@ const NeverBounce = require('neverbounce')({
     apiSecret: keys.NeverBounce.SECRET_KEY
 });
 
-//Readline Setup
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+const NameToDomain = clearbit.NameToDomain;
+
+
+//will prompt user for command line input, parse input, and start email testing
+function getInput(){
+    //Readline Instantiation
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.question('Input Format - First Last Company: ', (response) => {
+        response = response.split(" ")
+        first = response[0];
+        last = response[1];
+        company = response[2];
+
+        rl.close();
+        
+        console.log("Input recieved, Fetching Company Domain");
+        NameToDomain.find({name: company})
+          .then(function (result) {
+            domain = result.domain
+            emails = LG.nameToList(first, last, domain);
+
+            index=0
+            console.log("Checking emails");
+            testEmail(emails[index]);
+          })
+          .catch(NameToDomain.NotFoundError, function (err) {
+            console.log(err); // Domain could not be found
+          })
+          .catch(function (err) {
+            console.log('Bad/invalid request, unauthorized, Clearbit error, or failed request');
+          });
+
+    });
+}
 
 //Recuresively goes through email list until one return code 0 (valid)
 async function testEmail(email){
@@ -31,27 +65,12 @@ async function testEmail(email){
               testEmail(emails[index]); //Recursive email test until correct email is found  
             } else {
                 console.log("No valid emails found");
+                getInput();
             }
         }
     } catch(error){
         console.log(error)
     }
-}
-
-//will prompt user for command line input, parse input, and start email testing
-function getInput(){
-    rl.question('Input Format - First Last Domain: ', (response) => {
-        response = response.split(" ")
-        first = response[0];
-        last = response[1];
-        domain = response[2];
-
-        rl.close();
-
-        emails = LG.nameToList(first, last, domain);
-        index=0
-        testEmail(emails[index]);
-    });
 }
 
 //Handles async call to hubspot to create contact props and push to Hubspot online
