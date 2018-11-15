@@ -21,7 +21,6 @@ function runCheck(){
     testEmail(emails[index]);
 }
 
-
 //will prompt user for command line input, parse input, and start email testing
 function getInput(){
     //Readline Instantiation
@@ -34,11 +33,13 @@ function getInput(){
         response = response.split(" ")
         first = response[0];
         last = response[1];
-        company = response[2];
+        company = response.slice(2, response.length).join(" ");
 
         rl.close();
         
         console.log("Input recieved, Fetching Company Domain");
+
+        //Clearbit API call to retrieve company domain from name
         NameToDomain.find({name: company})
           .then(function (result) {
             console.log("Domain found");
@@ -46,16 +47,36 @@ function getInput(){
             runCheck();
           })
           .catch(NameToDomain.NotFoundError, function (err) {
-            console.log(err); // Domain could not be found
-            console.log("Domain not found, defaulting to company.com");
-            domain = `${company}.com`
-            runCheck();
+            console.log("Domain not found")
+            
+            // Create new readline instance, assume control of input and output, prompt for manual domain entry
+            const rl = readline.createInterface({
+              input: process.stdin,
+              output: process.stdout
+            });
+
+            rl.question('Enter Domain: ', (response) => {
+                domain = response;
+
+                rl.close()
+                runCheck();
+            })
           })
           .catch(function (err) {
             console.log('Bad/invalid request, unauthorized, Clearbit error, or failed request');
           });
 
     });
+}
+
+function next(){
+    index++
+    if(index < emails.length){
+      testEmail(emails[index]); //Recursive email test until correct email is found  
+    } else {
+        console.log("No valid emails found");
+        getInput();
+    }    
 }
 
 //Recuresively goes through email list until one return code 0 (valid)
@@ -65,15 +86,13 @@ async function testEmail(email){
         if(response.is(0)){
             console.log(`${email} is valid, creating contact`);
             emailFound(first, last, email);
-        } else {
+        } else if(response.is(3)){
+					console.log(`${email} is catchall*** Creating contact`);
+					emailFound(first, last, email);
+				}
+        else {
             console.log(`${email} is not valid`);
-            index++
-            if(index < emails.length){
-              testEmail(emails[index]); //Recursive email test until correct email is found  
-            } else {
-                console.log("No valid emails found");
-                getInput();
-            }
+            next();
         }
     } catch(error){
         console.log(error)

@@ -9,8 +9,11 @@ const nameToList = (first, last, companyDomain) => {
 		`${first.charAt(0)}${last}@${companyDomain}`,
 		`${first.charAt(0)}${last.charAt(0)}@${companyDomain}`,
 		`${first.charAt(0)}.${last.charAt(0)}@${companyDomain}`,
+		`${first}${last.slice(0,3)}@${companyDomain}`,
+		`${first.charAt(0)}${last.slice(0,3)}@${companyDomain}`,
+		`${first.slice(0,3)}${last.slice(0,3)}@${companyDomain}`
 	]
-	console.log("Email List Compiled")
+	console.log("Email List Compiled");
 	return emailList
 }
 
