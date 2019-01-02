@@ -1,6 +1,6 @@
 ### Simple library to help you find contact information for an individual within a company, and add them to your hubspot contact list
 
-####Requirements:
+#### Requirements:
 
 1. Hubspot account, and a HAPI KEY from the developer section
 2. Clearbit account (https://clearbit.com) and API KEY
